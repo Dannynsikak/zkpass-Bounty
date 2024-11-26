@@ -13,13 +13,14 @@ struct Attestation {
     bytes32 publicFieldsHash;
 }
 
-contract SampleAttestation is ProofVerifier, Ownable {  // Inherit Ownable to use access control
+contract SampleAttestation is ProofVerifier, Ownable {
     mapping(bytes32 => Attestation) private attestations;
     mapping(address => bytes32) private attestedAddresses;
 
     string private secret = "bad Secret";  // Default secret value
 
-    constructor() ProofVerifier() {}
+    // Pass msg.sender to the Ownable constructor
+    constructor() Ownable(msg.sender) ProofVerifier() {}
 
     // Function to set a new secret (only accessible by the owner)
     function setSecret(string memory _newSecret) public onlyOwner {

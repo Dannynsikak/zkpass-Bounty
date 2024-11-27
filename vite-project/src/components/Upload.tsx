@@ -1,37 +1,39 @@
 import React, { useState } from "react";
+import { ethers } from "ethers";
+import { useReadHealthcareGetRecord } from "../generated"; // Import ABI
+
+const contractAddress = "0x101ffCd65A691BB83D18fD7f31bAD50e7571273A";
 
 const UploadRecord: React.FC = () => {
-  const [data, setData] = useState("");
-  const [proof, setProof] = useState("");
+  const [recordHash, setRecordHash] = useState("");
 
-  const handleUpload = () => {
-    // Logic to upload encrypted data and proof
-    console.log("Uploading record...");
+  const uploadRecord = async () => {
+    if (!window.ethereum || !recordHash) return;
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      contractAddress,
+      useReadHealthcareGetRecord.abi,
+      await signer
+    );
+
+    const tx = await contract.uploadRecord(recordHash);
+    await tx.wait();
+    alert("Record uploaded successfully!");
+    setRecordHash("");
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-md">
-      <h2 className="text-xl font-bold mb-4">Upload Encrypted Record</h2>
+    <div>
+      <h1>Upload Record</h1>
       <input
         type="text"
-        placeholder="Enter encrypted data"
-        className="border w-full p-2 mb-4"
-        value={data}
-        onChange={(e) => setData(e.target.value)}
+        value={recordHash}
+        onChange={(e) => setRecordHash(e.target.value)}
+        placeholder="Enter Record Hash"
+        className="text-black"
       />
-      <input
-        type="text"
-        placeholder="Enter proof"
-        className="border w-full p-2 mb-4"
-        value={proof}
-        onChange={(e) => setProof(e.target.value)}
-      />
-      <button
-        onClick={handleUpload}
-        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700"
-      >
-        Upload
-      </button>
+      <button onClick={uploadRecord}>Upload</button>
     </div>
   );
 };

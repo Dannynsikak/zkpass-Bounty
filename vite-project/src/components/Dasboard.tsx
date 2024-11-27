@@ -1,21 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { ethers } from "ethers";
+import { useReadHealthcareGetRecord } from "../generated"; // Import ABI
+
+const contractAddress = "0x101ffCd65A691BB83D18fD7f31bAD50e7571273A";
 
 const Dashboard: React.FC = () => {
+  const [records, setRecords] = useState<
+    { recordHash: string; timestamp: number }[]
+  >([]);
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      if (!window.ethereum) return;
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(
+        contractAddress,
+        useReadHealthcareGetRecord.abi,
+        signer
+      );
+
+      const userRecords = await contract.getRecords();
+      setRecords(userRecords);
+    };
+
+    fetchRecords();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
-      <h1 className="text-2xl font-bold mb-6 text-center text-black">
-        Healthcare Dashboard
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Map patient records */}
-        <div className="bg-white shadow-md rounded-lg p-4 text-black">
-          <h2 className="text-lg font-semibold ">Patient Record</h2>
-          <p>Encrypted Data: xyz...</p>
-          <button className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-            Retrieve Record
-          </button>
-        </div>
-      </div>
+    <div>
+      <h1>Dashboard</h1>
+      <ul>
+        {records.map((record, index) => (
+          <li key={index}>
+            Record Hash: {record.recordHash} <br />
+            Timestamp: {new Date(record.timestamp * 1000).toLocaleString()}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -20,10 +20,10 @@ contract GetSecret {
         require(msg.sender == _proof.recipient, "Sender does not match recipient!");
 
         // Call the proxy contract for proof verification
-        (bool success, ) = proxy.call(
+        (bool success, bytes memory errorData) = proxy.call(
             abi.encodeWithSignature("attest(bytes)", abi.encode(_proof))
         );
-        require(success, "Proof verification failed!");
+        require(success, string(abi.encodePacked("Proof verification failed: ", errorData)));
 
         // Assign the encrypted data to the sender's record
         patientRecords[msg.sender] = encryptedData;
@@ -38,12 +38,14 @@ contract GetSecret {
         require(msg.sender == _proof.recipient, "Unauthorized access!");
 
         // Call the proxy contract to verify the proof
-        (bool success, ) = proxy.call(
-            abi.encodeWithSignature("verify(bytes)", abi.encode(_proof))
+        (bool success, bytes memory errorData) = proxy.call(
+            abi.encodeWithSignature("attest(bytes)", abi.encode(_proof))
         );
-        require(success, "Invalid proof!");
+        require(success, string(abi.encodePacked("Proof verification failed: ", errorData)));
+        string memory record = patientRecords[msg.sender];
+        emit RecordFetched(msg.sender, record);
 
         // Return the encrypted record
-        return patientRecords[msg.sender];
+        return record;
     }
 }

@@ -1,29 +1,41 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import Dashboard from "./components/Dasboard";
-import UploadRecord from "./components/Upload";
-import RetrieveRecord from "./components/RcordRetrieval";
-
-const App: React.FC = () => {
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import Form from "./components/form"; // Import the new Form component
+import Upload from "./components/Upload";
+const App = () => {
   return (
     <Router>
-      <div className="p-4">
-        <nav className="mb-4">
-          <Link to="/" className="mr-4 text-blue-500">
-            Dashboard
-          </Link>
-          <Link to="/upload" className="mr-4 text-blue-500">
-            Upload Record
-          </Link>
-          <Link to="/retrieve" className="text-blue-500">
-            Retrieve Record
-          </Link>
-        </nav>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/upload" element={<UploadRecord />} />
-          <Route path="/retrieve" element={<RetrieveRecord />} />
-        </Routes>
+      <div className="app">
+        <header className="p-4 bg-blue-500 text-white">
+          <h1 className="text-xl">My Application</h1>
+          <nav>
+            <ul className="flex space-x-4">
+              <li>
+                <Link to="/" className="text-white hover:text-gray-200">
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/form" className="text-white hover:text-gray-200">
+                  Verification Form
+                </Link>
+              </li>{" "}
+              <li>
+                <Link to="/upload" className="text-white hover:text-gray-200">
+                  Upload
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        <main className="p-6">
+          <Routes>
+            <Route path="/" element={<h2>Welcome to the Application</h2>} />
+            <Route path="/form" element={<Form />} />{" "}
+            {/* Route to the Form component */}
+            <Route path="/upload" element={<Upload />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );

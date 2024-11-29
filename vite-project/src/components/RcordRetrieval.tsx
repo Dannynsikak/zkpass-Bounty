@@ -13,6 +13,7 @@ const RetrieveRecord: React.FC = () => {
     <div className="max-w-md mx-auto p-4 bg-white shadow-md rounded-md">
       <h2 className="text-xl font-bold mb-4">Retrieve Encrypted Record</h2>
       <button
+        type="button"
         onClick={handleRetrieve}
         className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
       >

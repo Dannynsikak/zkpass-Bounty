@@ -23,7 +23,7 @@ export type Proof = {
   validatorSignature: `0x${string}`;
 };
 
-const contractAddress = "0x101ffCd65A691BB83D18fD7f31bAD50e7571273A";
+const contractAddress = "0xAd0842bEc05F5f3AC8E456e25fA0Ee1E5afe7EF4";
 
 const Form = () => {
   let chainParams: Proof;
@@ -48,7 +48,7 @@ const Form = () => {
     if (!isPending || !isPendingRead) {
       setSecret(data ?? "");
     }
-  }, [isPending, data]);
+  }, [isPending, isPendingRead, data]);
 
   const requestVerifyMessage = async (
     e: FormEvent,

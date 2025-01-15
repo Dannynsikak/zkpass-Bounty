@@ -29,39 +29,6 @@ The verification ensures the authenticity of the user data without exposing the 
 Result Handling:
 
 Based on the proof verification result, appropriate actions are taken (e.g., granting access, confirming identity).
-Example Code Snippet
-Here’s a sample integration of zkPass for proof verification:
-
-`typescript
-
-import { DvrModuleClient, extractPayload } from "@zkpass/dvr-client-ts";
-
-// Extract payload from token
-const dvrPayload = extractPayload(dvrToken);
-
-// Instantiate the zkPass client
-const dvrModuleClient = new DvrModuleClient({
-baseUrl: ZKPASS_SERVICE_URL,
-apiKey: API_KEY,
-secretApiKey: API_SECRET,
-});
-
-// Set expected metadata for verification
-const expectedMetadata = {
-dvr: JSON.stringify(dvrPayload),
-ttl: EXPECTED_DVR_TTL,
-user_data_verifying_keys: userDataVerifyingKeys,
-};
-
-// Call the verification function
-const proofOutput = dvrModuleClient.callDvrVerifyZkPassProof(
-ZKPASS_ZKVM,
-zkPassProofToken,
-expectedMetadata
-);
-
-// Handle verification result
-console.log("Verification Result:", proofOutput);`
 
 Installation
 Clone the repository:

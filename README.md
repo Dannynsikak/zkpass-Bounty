@@ -31,13 +31,15 @@ Result Handling:
 Based on the proof verification result, appropriate actions are taken (e.g., granting access, confirming identity).
 
 Installation
-Clone the repository:
 
-git clone https://github.com/Dannynsikak/zkpass-Bounty.git
-Install dependencies:
+    Clone the repository:
+    git clone https://github.com/Dannynsikak/zkpass-Bounty.git
 
-npm install
-Set environment variables for the smart contract in a .env file:
+    cd vite-project
+
+    Install dependencies:
+    npm install
+    Set environment variables for the smart contract in a .env file:
 
 Start the development server:
 npm start

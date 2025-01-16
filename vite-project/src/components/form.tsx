@@ -26,18 +26,14 @@ export type Proof = {
 const contractAddress = "0x9941945A378Ac9b58D6BE283bec71B72E9CCE747";
 
 const Form = () => {
-  // States for the app
-  const [appId, setAppId] = useState<string>(
+  const [healthcareAppId, setHealthcareAppId] = useState<string>(
     "9af234d9-262f-4ee7-b85a-098d82f1efab"
   );
   const [schemaId, setSchemaId] = useState<string>(
     "a70764f1b4564e0cbfe6d42e276cdc91"
   );
   const [result, setResult] = useState<Result | undefined>(undefined);
-  // const [record, setRecord] = useState<string | undefined>("0x");
-  const [recordLink, setRecordLink] = useState<string | undefined>(
-    "https://sepolia.etherscan.io/"
-  );
+  const [recordLink, setRecordLink] = useState<string | undefined>("");
 
   const { writeContractAsync, isPending } = useWriteGetSecretAssignRecord();
   const {
@@ -46,14 +42,12 @@ const Form = () => {
     refetch,
   } = useReadHealthcareGetSecret({ address: contractAddress });
 
-  // Update record when data changes
   useEffect(() => {
     if (!isPending && !isPendingRead) {
       setRecordLink(data ?? "");
     }
   }, [data, isPending, isPendingRead]);
 
-  // Fetch transaction hash and generate etherscan link
   const getRecordLink = async () => {
     if (!window.ethereum) {
       alert("Ethereum provider not found. Please install MetaMask.");
@@ -61,8 +55,6 @@ const Form = () => {
     }
 
     try {
-      // const provider = new ethers.BrowserProvider(window.ethereum);
-
       const transactionHash = Transaction.toString();
       const etherscanLink = `https://sepolia.etherscan.io/tx/${transactionHash}`;
       setRecordLink(etherscanLink);
@@ -71,16 +63,15 @@ const Form = () => {
     }
   };
 
-  // Handle form submission
   const requestVerifyMessage = async (
     e: FormEvent,
-    appId: string,
+    healthcareAppId: string,
     schemaId: string
   ) => {
     e.preventDefault();
 
     try {
-      const connector = new TransgateConnect(appId);
+      const connector = new TransgateConnect(healthcareAppId);
       const isAvailable = await connector.isTransgateAvailable();
 
       if (!isAvailable) {
@@ -149,10 +140,10 @@ const Form = () => {
     <div className="app text-black">
       <form
         className="max-w-md mx-auto bg-white shadow-lg rounded-lg p-6 space-y-4"
-        onSubmit={(e) => requestVerifyMessage(e, appId, schemaId)}
+        onSubmit={(e) => requestVerifyMessage(e, healthcareAppId, schemaId)}
       >
         <h2 className="text-2xl font-semibold text-center text-gray-800">
-          Verification Form
+          Healthcare Verification Form
         </h2>
 
         <div>
@@ -160,15 +151,15 @@ const Form = () => {
             htmlFor="app-id"
             className="block text-gray-700 font-medium mb-2"
           >
-            AppId:
+            Healthcare App ID:
           </label>
           <input
             id="app-id"
             type="text"
-            value={appId}
-            onChange={(e) => setAppId(e.target.value)}
+            value={healthcareAppId}
+            onChange={(e) => setHealthcareAppId(e.target.value)}
             className="w-full border border-gray-300 rounded-lg p-3"
-            placeholder="Your App ID"
+            placeholder="Your Healthcare App ID"
           />
         </div>
 
@@ -177,7 +168,7 @@ const Form = () => {
             htmlFor="schema-id"
             className="block text-gray-700 font-medium mb-2"
           >
-            SchemaId:
+            Healthcare Schema ID:
           </label>
           <input
             id="schema-id"
@@ -185,7 +176,7 @@ const Form = () => {
             value={schemaId}
             onChange={(e) => setSchemaId(e.target.value)}
             className="w-full border border-gray-300 rounded-lg p-3"
-            placeholder="Your Schema ID"
+            placeholder="Your Healthcare Schema ID"
           />
         </div>
 
@@ -207,23 +198,17 @@ const Form = () => {
 
             {recordLink && (
               <div className="mt-4 flex items-center space-x-2">
-                {recordLink ? (
-                  <>
-                    <span className="text-gray-700 font-medium">
-                      Record Link:
-                    </span>
-                    <a
-                      href={`https://etherscan.io/tx/${recordLink}`} // Replace with the correct Etherscan URL format if needed
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-500 hover:text-blue-700 underline"
-                    >
-                      View Record on Etherscan
-                    </a>
-                  </>
-                ) : (
-                  <p className="text-red-500">No Record link available</p>
-                )}
+                <span className="text-gray-700 font-medium">
+                  Healthcare Record Link:
+                </span>
+                <a
+                  href={`https://sepolia.etherscan.io/tx/${recordLink}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-500 hover:text-blue-700 underline"
+                >
+                  View Record on Etherscan
+                </a>
               </div>
             )}
           </div>

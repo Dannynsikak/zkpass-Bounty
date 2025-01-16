@@ -12,7 +12,7 @@ This project demonstrates a secure, privacy-preserving system for managing healt
 
 ### Potential Use Case with a Health API
 
-      If a health API is available in the future, it can be integrated to fetch and sync health records. The smart contract will handle CRUD operations securely, ensuring compliance with privacy standards such as HIPAA. The current implementation uses placeholder data to simulate real-world scenarios.
+If a health API is available in the future, it can be integrated to fetch and sync health records. The smart contract will handle CRUD operations securely, ensuring compliance with privacy standards such as HIPAA. The current implementation uses placeholder data to simulate real-world scenarios.
 
 ### Technologies Used
 
